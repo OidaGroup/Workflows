@@ -27,14 +27,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Get PHP version from composer.json
-        run: |
-          echo "output=$(grep composer.json -o -e '"php":\s*".\d\.\d' | grep -o -e '\d\.\d')" >> $GITHUB_OUTPUT
         id: php_version
+        run: |
+          echo "output=$(fromJson(jq -c . < composer.json).require.php | grep -o -e '\d\.\d')" >> $GITHUB_OUTPUT
 
       - name: Get package manager from package.json
-        run: |
-          echo "output=$(grep package.json -o -e '"packageManager": "\w*' | cut -d'"' -f4-)" >> $GITHUB_OUTPUT
         id: package_manager
+        run: |
+          echo "output=$(fromJson(jq -c . < package.json).packageManager)" >> $GITHUB_OUTPUT
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
