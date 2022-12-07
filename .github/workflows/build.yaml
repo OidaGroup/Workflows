@@ -6,20 +6,11 @@ on:
       COMPOSER_AUTH:
         required: false
     inputs:
-      package_manager:
-        required: false
-        description: Package manager to use
-        default: pnpm
-        type: string
       push:
         required: false
         description: Push files back to github
         default: false
         type: boolean
-      php_version:
-        required: true
-        description: PHP version to use
-        type: string
       upload:
         required: false
         description: Define which files should be uploaded
@@ -35,9 +26,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Get PHP version from composer.json
+        run: |
+          echo "output=$(grep composer.json -o -e '"php": "~\d\.\d' | cut -d"~" -f2-)" >> $GITHUB_OUTPUT
+        id: php_version
+
+      - name: Get package manager from package.json
+        run: |
+          echo "output=$(grep package.json -o -e '"packageManager": "\w*' | cut -d'"' -f4-)" >> $GITHUB_OUTPUT
+        id: package_manager
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
-        if: ${{ inputs.package_manager == 'pnpm' }}
+        if: ${{ steps.package_manager.outputs.output == 'pnpm' }}
         with:
           version: latest
 
@@ -45,12 +46,12 @@ jobs:
         uses: actions/setup-node@v3.5.1
         with:
           node-version-file: .nvmrc
-          cache: ${{ inputs.package_manager }}
+          cache: ${{ steps.package_manager.outputs.output }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ inputs.php_version }}
+          php-version: ${{ steps.php_version.outputs.output }}
           tools: composer:v2
           extensions: mbstring, intl
 
@@ -75,7 +76,7 @@ jobs:
         run: composer install --no-interaction --no-ansi --optimize-autoloader --no-progress --prefer-dist
 
       - name: Build JS and CSS
-        run: ${{ inputs.package_manager }} run pipeline
+        run: ${{ steps.package_manager.outputs.output }} run pipeline
 
       - name: Remove dev dependencies
         run: composer install --no-interaction --no-ansi --optimize-autoloader --no-progress --prefer-dist --no-dev
