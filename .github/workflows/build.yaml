@@ -28,7 +28,7 @@ jobs:
 
       - name: Get PHP version from composer.json
         run: |
-          echo "output=$(grep composer.json -o -e '"php": "~\d\.\d' | cut -d"~" -f2-)" >> $GITHUB_OUTPUT
+          echo "output=$(grep composer.json -o -e '"php":\s*".\d\.\d' | grep -o  -e '\d\.\d')" >> $GITHUB_OUTPUT
         id: php_version
 
       - name: Get package manager from package.json
