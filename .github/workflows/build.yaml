@@ -31,12 +31,12 @@ jobs:
       - name: Get PHP version from composer.json
         id: php_version
         run: |
-          echo "output=$(fromJson(jq -c . < composer.json).require.php | grep -o -e '\d\.\d')" >> $GITHUB_OUTPUT
+          echo "output=$(jq '.require.php' < composer.json | grep -o -e '\d\.\d')" >> $GITHUB_OUTPUT
 
       - name: Get package manager from package.json
         id: package_manager
         run: |
-          echo "output=$(fromJson(jq -c . < package.json).packageManager)" >> $GITHUB_OUTPUT
+          echo "output=$(jq '.packageManager' < package.json)" >> $GITHUB_OUTPUT
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
