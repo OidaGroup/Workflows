@@ -75,13 +75,13 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install packages with composer
-        run: composer install --no-interaction --no-ansi --optimize-autoloader --no-progress --prefer-dist
+        run: composer install --no-interaction --no-ansi --optimize-autoloader --no-progress --prefer-dist --ignore-platform-reqs
 
       - name: Build JS and CSS
         run: ${{ steps.package_manager.outputs.output }} run pipeline
 
-      - name: Remove dev dependencies
-        run: composer install --no-interaction --no-ansi --optimize-autoloader --no-progress --prefer-dist --no-dev
+      - name: Remove dev dependencies 
+        run: composer install --no-interaction --no-ansi --optimize-autoloader --no-progress --prefer-dist --no-dev --ignore-platform-reqs
 
       - name: Compress files
         if: ${{ inputs.upload }}
