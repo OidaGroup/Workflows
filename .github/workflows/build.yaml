@@ -6,11 +6,6 @@ on:
       COMPOSER_AUTH:
         required: false
     inputs:
-      push:
-        required: false
-        description: Push files back to github
-        default: false
-        type: boolean
       upload:
         required: false
         description: Define which files should be uploaded
@@ -80,7 +75,7 @@ jobs:
       - name: Build JS and CSS
         run: ${{ steps.package_manager.outputs.output }} run pipeline
 
-      - name: Remove dev dependencies 
+      - name: Remove dev dependencies
         run: composer install --no-interaction --no-ansi --optimize-autoloader --no-progress --prefer-dist --no-dev --ignore-platform-reqs
 
       - name: Compress files
