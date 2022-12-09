@@ -3,21 +3,27 @@ name: Notification of deployment
 on:
   workflow_call:
     secrets:
-      USERNAME:
+      NOTIFY_USERNAME:
         required: true
-      PASSWORD:
+      NOTIFY_PASSWORD:
         required: true
+    inputs:
       FROM:
         required: true
+        default: Jon Uhlmann <jon@uhlmann.pro>
+        type: string
       TO:
         required: true
+        type: string
       CC:
         required: false
+        type: string
       BCC:
         required: false
+        type: string
       REPLY_TO:
         required: false
-    inputs:
+        type: string
       sleep:
         description: 'Wait x seconds before sending the notification'
         required: false
@@ -84,13 +90,13 @@ jobs:
         uses: jonnitto/service-nodemailer@main
         with:
           service: iCloud
-          user: ${{ secrets.USERNAME }}
-          pass: ${{ secrets.PASSWORD }}
-          from: ${{ secrets.FROM }}
-          to: ${{ secrets.TO }}
-          cc: ${{ secrets.CC }}
-          bcc: ${{ secrets.BCC }}
-          replyTo: ${{ secrets.REPLY_TO }}
+          user: ${{ secrets.NOTIFY_USERNAME }}
+          pass: ${{ secrets.NOTIFY_PASSWORD }}
+          from: ${{ inputs.FROM }}
+          to: ${{ inputs.TO }}
+          cc: ${{ inputs.CC }}
+          bcc: ${{ inputs.BCC }}
+          replyTo: ${{ inputs.REPLY_TO }}
           individual: ${{ inputs.individual }}
           subject: ${{ env.SUBJECT }}
           text: |
