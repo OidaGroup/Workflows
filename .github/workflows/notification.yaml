@@ -9,7 +9,7 @@ on:
         required: true
     inputs:
       FROM:
-        required: true
+        required: false
         default: Jon Uhlmann <jon@uhlmann.pro>
         type: string
       TO:
