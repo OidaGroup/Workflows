@@ -56,12 +56,6 @@ jobs:
         if: ${{ inputs.artifact != '' }}
         run: tar -xvf ${{ inputs.artifact }}.tar
 
-      - name: Delete artifact
-        if: ${{ inputs.artifact != '' }}
-        uses: geekyeggo/delete-artifact@v2
-        with:
-          name: ${{ inputs.artifact }}
-
       - name: Build Image
         uses: docker/build-push-action@v3
         with:
@@ -72,3 +66,9 @@ jobs:
           platforms: ${{ inputs.platforms }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          
+      - name: Delete artifact
+        if: ${{ inputs.artifact != '' }}
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: ${{ inputs.artifact }}
