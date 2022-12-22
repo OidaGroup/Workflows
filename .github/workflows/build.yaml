@@ -3,6 +3,8 @@ name: Build website
 on:
   workflow_call:
     secrets:
+      COMPOSER_AUTH_COMMAND:
+        required: false
       COMPOSER_AUTH:
         required: false
     inputs:
@@ -15,7 +17,8 @@ on:
 jobs:
   website:
     env:
-      COMPOSER_AUTH_COMMAND: ${{secrets.COMPOSER_AUTH}}
+      COMPOSER_AUTH_COMMAND: ${{secrets.COMPOSER_AUTH_COMMAND}}
+      COMPOSER_AUTH: ${{secrets.COMPOSER_AUTH}}
     runs-on: ubuntu-latest
     steps:
       - name: Install jq
