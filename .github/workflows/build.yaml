@@ -11,7 +11,7 @@ on:
       upload:
         required: false
         description: Define which files should be uploaded
-        default: .docker bin DistributionPackages Data Packages Web composer.json composer.lock flow auth.json
+        default: .docker bin DistributionPackages Data Packages Web composer.json composer.lock flow
         type: string
 
 jobs:
@@ -58,6 +58,11 @@ jobs:
       - name: Configure composer authentication
         if: ${{ env.COMPOSER_AUTH_COMMAND }}
         run: composer config --auth ${{ env.COMPOSER_AUTH_COMMAND }}
+        
+      - name: Save auth.json
+        id: auth_json
+        if: ${{ env.COMPOSER_AUTH_COMMAND }}
+        run: echo "output=auth.json" >> $GITHUB_OUTPUT
 
       - name: Get composer cache directory
         id: composer-cache
@@ -82,7 +87,7 @@ jobs:
         run: composer install --no-interaction --no-ansi --optimize-autoloader --no-progress --prefer-dist --no-dev --ignore-platform-reqs
 
       - name: Compress files
-        run: tar -cvf build.tar ${{ inputs.upload }}
+        run: tar -cvf build.tar ${{ inputs.upload }} ${{ steps.auth_json.outputs.output }}
 
       - name: Upload file
         uses: actions/upload-artifact@v3
