@@ -50,7 +50,7 @@ jobs:
           find: ${{ steps.repository_owner.outputs.lowercase }}/
           replace: ''
       - name: Delete containers
-        uses: snok/container-retention-policy@v1
+        uses: snok/container-retention-policy@v2
         with:
           image-names: ${{ steps.plain_repository_name.outputs.value }}${{ inputs.imageName }}
           cut-off: ${{ inputs.cutOff }}
