@@ -15,7 +15,7 @@ on:
         type: string
 
 jobs:
-  website:
+  build:
     env:
       COMPOSER_AUTH_COMMAND: ${{secrets.COMPOSER_AUTH_COMMAND}}
       COMPOSER_AUTH: ${{secrets.COMPOSER_AUTH}}
@@ -58,7 +58,7 @@ jobs:
       - name: Configure composer authentication
         if: ${{ env.COMPOSER_AUTH_COMMAND }}
         run: composer config --auth ${{ env.COMPOSER_AUTH_COMMAND }}
-        
+
       - name: Save auth.json
         id: auth_json
         if: ${{ env.COMPOSER_AUTH_COMMAND }}
