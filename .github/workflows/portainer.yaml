@@ -111,6 +111,6 @@ jobs:
         run: sleep 10s
       - name: Send webhook to Portainer
         if: ${{ inputs.enable_webhook }}
-        uses: joelwmale/webhook-action@master@v2.3.2
+        uses: joelwmale/webhook-action@2.3.2
         with:
           url: ${{ secrets.WEBHOOK_URL }}
