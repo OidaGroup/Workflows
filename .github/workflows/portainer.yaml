@@ -15,9 +15,6 @@ on:
       PORTAINER_SWARM_ID:
         description: "Swarm ID of the Portainer instance"
         required: true
-      PORTAINER_STACK_NAME:
-        description: "Stack name of the Portainer instance"
-        required: true
       MARIADB_ROOT_PASSWORD:
         description: "Root password of the MariaDB instance"
         required: false
@@ -97,6 +94,6 @@ jobs:
           username: ${{ secrets.PORTAINER_USERNAME }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
           swarm-id: ${{ secrets.PORTAINER_SWARM_ID }}
-          stack-name: "lighthouse-${{ inputs.stack_name_lowercase }}-${{ secrets.PORTAINER_STACK_NAME }}"
+          stack-name: "lighthouse-${{ inputs.stack_name_lowercase }}-${{ inputs.portainer_stack_name }}"
           stack-definition: ".docker/stack.yml"
           template-variables: '{"NEOS_IMAGE_TAG": "${{ inputs.image_tag }}" ,"TIMEZONE": "${{ inputs.timezone }}","PORTAINER_STACK_NAME": "${{ inputs.portainer_stack_name }}","CUSTOMER": "${{ inputs.stack_name }}", "CUSTOMER_LOWERCASE": "${{ inputs.stack_name_lowercase }}","RELEASE_DATE": "${{ steps.date.outputs.date }}","MARIADB_ROOT_PASSWORD": "${{ secrets.MARIADB_ROOT_PASSWORD }}" ,"NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}","NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}","MAUTIC_USER": "${{ secrets.MAUTIC_USER }}","MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}","MAUTIC_DB_HOST": "${{ secrets.MAUTIC_DB_HOST }}","MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}", "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}", "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}", "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}"}'
