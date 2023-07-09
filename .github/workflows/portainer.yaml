@@ -1,0 +1,92 @@
+name: Deploy to Portainer
+
+on:
+  workflow_call:
+    secrets:
+      PORTAINER_HOST:
+        description: "Host of the Portainer instance"
+        required: true
+      PORTAINER_USERNAME:
+        description: "Username of the Portainer instance"
+        required: true
+      PORTAINER_PASSWORD:
+        description: "Password of the Portainer instance"
+        required: true
+      PORTAINER_SWARM_ID:
+        description: "Swarm ID of the Portainer instance"
+        required: true
+      PORTAINER_STACK_NAME:
+        description: "Stack name of the Portainer instance"
+        required: true
+      TIMEZONE:
+        description: "Timezone of the Portainer instance"
+        required: true
+      MARIADB_ROOT_PASSWORD:
+        description: "Root password of the MariaDB instance"
+        required: false
+      NEOS_DB_HOST:
+        description: "Host of the Neos database"
+        required: true
+      NEOS_DB_PASSWORD:
+        description: "Password of the Neos database"
+        required: true
+      MAUTIC_USER:
+        description: "User of the Mautic instance"
+        required: false
+      MAUTIC_PASSWORD:
+        description: "Password of the Mautic instance"
+        required: false
+      MAUTIC_DB_HOST:
+        description: "Host of the Mautic database"
+        required: false
+      MAUTIC_DB_PASSWORD:
+        description: "Password of the Mautic database"
+        required: false
+      PEXELS_API_KEY:
+        description: "API key of the Pexels API"
+        required: true
+      ELASTICSEARCH_USERNAME:
+        description: "Username of the Elasticsearch instance"
+        required: true
+      ELASTICSEARCH_PASSWORD:
+        description: "Password of the Elasticsearch instance"
+        required: true
+    inputs:
+      stack_name:
+        type: string
+        description: "Name of the stack"
+        required: true
+      stack_name_lowercase:
+        type: string
+        description: "Name of the stack in lowercase"
+        required: true
+      image_tag:
+        type: string
+        description: "Tag of the image"
+        required: true
+
+jobs:
+  portainer:
+    name: Deploy to portainer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait 10 seconds
+        shell: bash
+        run: sleep 10s
+      - name: Create summary
+        run: echo '### Deployment for [${{ inputs.stack_name }}](https://${{ inputs.stack_name_lowercase }}.oida.group) :rocket:' >> $GITHUB_STEP_SUMMARY
+      - name: Clone Repository
+        uses: actions/checkout@v3
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      - name: Deploy stack to Portainer
+        uses: carlrygart/portainer-stack-deploy@v1
+        with:
+          portainer-host: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          swarm-id: ${{ secrets.PORTAINER_SWARM_ID }}
+          stack-name: "lighthouse-${{ inputs.stack_name_lowercase }}-${{ secrets.PORTAINER_STACK_NAME }}"
+          stack-definition: ".docker/stack.yml"
+          template-variables: '{"NEOS_IMAGE_TAG": "${{ inputs.image_tag }}" ,"TIMEZONE": "${{ secrets.TIMEZONE }}","PORTAINER_STACK_NAME": "${{ secrets.PORTAINER_STACK_NAME }}","CUSTOMER": "${{ inputs.stack_name }}", "CUSTOMER_LOWERCASE": "${{ inputs.stack_name_lowercase }}","RELEASE_DATE": "${{ steps.date.outputs.date }}","MARIADB_ROOT_PASSWORD": "${{ secrets.MARIADB_ROOT_PASSWORD }}" ,"NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}","NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}","MAUTIC_USER": "${{ secrets.MAUTIC_USER }}","MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}","MAUTIC_DB_HOST": "${{ secrets.MAUTIC_DB_HOST }}","MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}", "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}", "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}", "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}"}'
