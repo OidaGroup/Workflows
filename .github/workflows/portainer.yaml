@@ -110,7 +110,7 @@ jobs:
             echo "output=YES" >> $GITHUB_OUTPUT
           fi
         env:
-          SECRET: ${{ secrets.WEBHOOK_URL}}
+          SECRET: ${{ secrets.PORTAINER_WEBHOOK_URL }}
       - name: Wait 10 seconds
         if: (steps.check_webhook.outputs.output == 'YES')
         shell: bash
@@ -119,4 +119,4 @@ jobs:
         if: (steps.check_webhook.outputs.output == 'YES')
         uses: joelwmale/webhook-action@2.3.2
         with:
-          url: ${{ secrets.WEBHOOK_URL }}
+          url: ${{ secrets.PORTAINER_WEBHOOK_URL }}
