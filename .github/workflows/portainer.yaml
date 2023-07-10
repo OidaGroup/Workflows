@@ -74,7 +74,6 @@ on:
 
 jobs:
   portainer:
-    name: Deploy to portainer
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.portainer_stack_name }}
