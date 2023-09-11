@@ -48,6 +48,9 @@ on:
       ELASTICSEARCH_PASSWORD:
         description: "Password of the Elasticsearch instance"
         required: true
+      MAILER_DSN:
+        description: "Transport Setup from symfony"
+        required: false
     inputs:
       stack_name:
         type: string
@@ -65,6 +68,10 @@ on:
         type: string
         default: "Europe/Vienna"
         description: "Timezone"
+        required: false
+      mailer_from:
+        type: string
+        description: "E-Mail address sender for forms"
         required: false
       portainer_stack_name:
         type: string
@@ -98,7 +105,7 @@ jobs:
           swarm-id: ${{ secrets.PORTAINER_SWARM_ID }}
           stack-name: "lighthouse-${{ inputs.stack_name_lowercase }}-${{ inputs.portainer_stack_name }}"
           stack-definition: ".docker/stack.yml"
-          template-variables: '{"NEOS_IMAGE_TAG": "${{ inputs.image_tag }}" ,"TIMEZONE": "${{ inputs.timezone }}","PORTAINER_STACK_NAME": "${{ inputs.portainer_stack_name }}","CUSTOMER": "${{ inputs.stack_name }}", "CUSTOMER_LOWERCASE": "${{ inputs.stack_name_lowercase }}","RELEASE_DATE": "${{ steps.date.outputs.date }}","MARIADB_ROOT_PASSWORD": "${{ secrets.MARIADB_ROOT_PASSWORD }}" ,"NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}","NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}","MAUTIC_USER": "${{ secrets.MAUTIC_USER }}","MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}","MAUTIC_DB_HOST": "${{ secrets.MAUTIC_DB_HOST }}","MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}", "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}", "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}", "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}"}'
+          template-variables: '{"NEOS_IMAGE_TAG": "${{ inputs.image_tag }}","MAILER_FROM": "${{ inputs.mailer_from }}","MAILER_DSN": "${{ secrets.MAILER_DSN }}","TIMEZONE": "${{ inputs.timezone }}","PORTAINER_STACK_NAME": "${{ inputs.portainer_stack_name }}","CUSTOMER": "${{ inputs.stack_name }}", "CUSTOMER_LOWERCASE": "${{ inputs.stack_name_lowercase }}","RELEASE_DATE": "${{ steps.date.outputs.date }}","MARIADB_ROOT_PASSWORD": "${{ secrets.MARIADB_ROOT_PASSWORD }}" ,"NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}","NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}","MAUTIC_USER": "${{ secrets.MAUTIC_USER }}","MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}","MAUTIC_DB_HOST": "${{ secrets.MAUTIC_DB_HOST }}","MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}", "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}", "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}", "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}"}'
       - name: Check if webhook is present
         id: check_webhook
         shell: bash
