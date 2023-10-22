@@ -51,9 +51,6 @@ on:
       MAILER_DSN:
         description: "Transport Setup from symfony"
         required: false
-      TEMPLATE_VARIABLES:
-        description: "Set your own template-variables"
-        required: false
     inputs:
       stack_name:
         type: string
@@ -81,10 +78,10 @@ on:
         default: "production"
         description: "Name of the stack in Portainer"
         required: false
-      use_own_template_variables:
-        type: boolean
-        default: false
-        description: "Use your own template-variables"
+      template_variables:
+        type: string
+        default: ""
+        description: "Set your own template-variables"
         required: false
 
 jobs:
@@ -105,7 +102,7 @@ jobs:
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Deploy stack to Portainer
-        if: ${{ !inputs.use_own_template_variables }}
+        if: ${{ inputs.template_variables == "" }}
         uses: carlrygart/portainer-stack-deploy@v1
         with:
           portainer-host: ${{ secrets.PORTAINER_HOST }}
@@ -116,7 +113,7 @@ jobs:
           stack-definition: ".docker/stack.yml"
           template-variables: '{"NEOS_IMAGE_TAG": "${{ inputs.image_tag }}","MAILER_FROM": "${{ inputs.mailer_from }}","MAILER_DSN": "${{ secrets.MAILER_DSN }}","TIMEZONE": "${{ inputs.timezone }}","PORTAINER_STACK_NAME": "${{ inputs.portainer_stack_name }}","CUSTOMER": "${{ inputs.stack_name }}", "CUSTOMER_LOWERCASE": "${{ inputs.stack_name_lowercase }}","RELEASE_DATE": "${{ steps.date.outputs.date }}","MARIADB_ROOT_PASSWORD": "${{ secrets.MARIADB_ROOT_PASSWORD }}" ,"NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}","NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}","MAUTIC_USER": "${{ secrets.MAUTIC_USER }}","MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}","MAUTIC_DB_HOST": "${{ secrets.MAUTIC_DB_HOST }}","MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}", "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}", "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}", "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}"}'
       - name: Deploy stack to Portainer with custom template variables
-        if: ${{ inputs.use_own_template_variables }}
+        if: ${{ inputs.template_variables != "" }}
         uses: carlrygart/portainer-stack-deploy@v1
         with:
           portainer-host: ${{ secrets.PORTAINER_HOST }}
@@ -125,8 +122,8 @@ jobs:
           swarm-id: ${{ secrets.PORTAINER_SWARM_ID }}
           stack-name: "lighthouse-${{ inputs.stack_name_lowercase }}-${{ inputs.portainer_stack_name }}"
           stack-definition: ".docker/stack.yml"
-          template-variables: ${{ secrets.TEMPLATE_VARIABLES }}
-
+          template-variables: ${{ inputs.template_variables }}
+      
       - name: Check if webhook is present
         id: check_webhook
         shell: bash
