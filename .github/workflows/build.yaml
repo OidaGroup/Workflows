@@ -34,7 +34,7 @@ jobs:
       - name: Get package manager from package.json
         id: package_manager
         run: |
-          echo "output=$(jq -r '.config.packageManager' < package.json)" >> $GITHUB_OUTPUT
+          echo "output=$(jq -r '.scripts.pipeline' < package.json | awk '{print $1}')" >> $GITHUB_OUTPUT
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.4.0
