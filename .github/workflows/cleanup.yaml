@@ -7,9 +7,6 @@ name: Cleanup workflow and docker images
 
 on:
   workflow_call:
-    secrets:
-      READ_AND_DELETE_PACKAGES_TOKEN:
-        required: true
     inputs:
       imageName:
         required: false
@@ -49,7 +46,7 @@ jobs:
           source: ${{ steps.repository_name.outputs.lowercase }}
           find: ${{ steps.repository_owner.outputs.lowercase }}/
           replace: ''
-      - name: Delete containers
+      - name: Delete old containers
         uses: snok/container-retention-policy@v2
         with:
           image-names: ${{ steps.plain_repository_name.outputs.value }}${{ inputs.imageName }}
@@ -59,4 +56,5 @@ jobs:
           org-name: oidagroup
           keep-at-least: ${{ inputs.keepAtLeast }}
           skip-tags: latest
-          token: ${{ secrets.READ_AND_DELETE_PACKAGES_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          token-type: github-token
