@@ -126,6 +126,12 @@ jobs:
               "MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}",
               "MAUTIC_DB_HOST": "${{ secrets.MAUTIC_DB_HOST }}",
               "MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}",
+              "NEOS_S3_ENDPOINT": "${{ secrets.NEOS_S3_ENDPOINT }}",
+              "NEOS_S3_SECRET": "${{ secrets.NEOS_S3_SECRET }}",
+              "SHOPWARE_APP_URL": "${{ secrets.SHOPWARE_APP_URL }}",
+              "SHOPWARE_APP_SECRET": "${{ secrets.SHOPWARE_APP_SECRET }}",
+              "SHOPWARE_DATABASE_PWD": "${{ secrets.SHOPWARE_DATABASE_PWD }}",
+              "SHOPWARE_MAIL_PWD": "${{ secrets.SHOPWARE_MAIL_PWD }}",
               "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}",
               "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}",
               "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}"
