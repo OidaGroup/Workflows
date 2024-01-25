@@ -51,6 +51,9 @@ on:
       MAILER_DSN:
         description: "Transport Setup from symfony"
         required: false
+      ZAMMAD_TOKEN:
+        description: "Token for Zammad instance"
+        required: false
     inputs:
       stack_name:
         type: string
@@ -134,7 +137,8 @@ jobs:
               "SHOPWARE_MAIL_PWD": "${{ secrets.SHOPWARE_MAIL_PWD }}",
               "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}",
               "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}",
-              "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}"
+              "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}",
+              "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}",
             }
       - name: Check if webhook is present
         id: check_webhook
