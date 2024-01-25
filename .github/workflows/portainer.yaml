@@ -138,7 +138,7 @@ jobs:
               "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}",
               "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}",
               "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}",
-              "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}",
+              "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}"
             }
       - name: Check if webhook is present
         id: check_webhook
