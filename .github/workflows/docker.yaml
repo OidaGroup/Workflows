@@ -89,4 +89,3 @@ jobs:
         with:
           name: ${{ inputs.artifact }}
           failOnError: false
-          token: ${{ secrets.GITHUB_TOKEN }}
