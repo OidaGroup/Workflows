@@ -36,11 +36,8 @@ jobs:
         run: |
           echo "output=$(jq -r '.scripts.pipeline' < package.json | awk '{print $1}')" >> $GITHUB_OUTPUT
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3.0.0
-        if: ${{ steps.package_manager.outputs.output == 'pnpm' }}
-        with:
-          version: latest
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Setup node
         uses: actions/setup-node@v4.0.2
