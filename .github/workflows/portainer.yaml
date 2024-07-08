@@ -86,19 +86,29 @@ on:
         default: ""
         description: "Prefix the stack in Portainer"
         required: false
+      enviroment_name:
+        type: string
+        default: ""
+        description: "Name of the enviroment"
+        required: false
+      enviroment_url:
+        type: string
+        default: ""
+        description: "URL of the enviroment"
+        required: false
 
 jobs:
   portainer:
     runs-on: ubuntu-latest
     environment:
-      name: ${{ inputs.portainer_stack_name }}
-      url: ${{ github.event.repository.homepage }}
+      name: ${{ inputs.enviroment_name || inputs.portainer_stack_name }}
+      url: ${{ inputs.enviroment_url || github.event.repository.homepage }}
     steps:
       - name: Wait 10 seconds
         shell: bash
         run: sleep 10s
       - name: Create summary
-        run: echo '### Deployment for [${{ inputs.stack_name }}](${{ github.event.repository.homepage }}) :rocket:' >> $GITHUB_STEP_SUMMARY
+        run: echo '### Deployment for [${{ inputs.enviroment_name || inputs.stack_name }}](${{ inputs.enviroment_url || github.event.repository.homepage }}) :rocket:' >> $GITHUB_STEP_SUMMARY
       - name: Clone Repository
         uses: actions/checkout@v4
       - name: Get current date
