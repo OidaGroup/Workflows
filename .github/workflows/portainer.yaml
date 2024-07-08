@@ -59,14 +59,11 @@ on:
         type: string
         description: "Name of the stack"
         required: true
-      stack_name_lowercase:
-        type: string
-        description: "Name of the stack in lowercase"
-        required: true
       image_tag:
         type: string
         description: "Tag of the image"
-        required: true
+        default: "latest"
+        required: false
       timezone:
         type: string
         default: "Europe/Vienna"
@@ -104,6 +101,9 @@ jobs:
       name: ${{ inputs.enviroment_name || inputs.portainer_stack_name }}
       url: ${{ inputs.enviroment_url || github.event.repository.homepage }}
     steps:
+      - name: Lowercase stack name
+        id: lowercase_stack_name
+        run: echo "output=$(echo 'console.log("${{ inputs.stack_name }}".toLowerCase())' | node -)" >> $GITHUB_OUTPUT
       - name: Wait 10 seconds
         shell: bash
         run: sleep 10s
@@ -121,7 +121,7 @@ jobs:
           username: ${{ secrets.PORTAINER_USERNAME }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
           swarm-id: ${{ secrets.PORTAINER_SWARM_ID }}
-          stack-name: "${{ inputs.stack_prefix }}${{ inputs.stack_name_lowercase }}-${{ inputs.portainer_stack_name }}"
+          stack-name: "${{ inputs.stack_prefix }}${{ steps.lowercase_stack_name.outputs.output }}-${{ inputs.portainer_stack_name }}"
           stack-definition: ".docker/stack.yml"
           template-variables: >-
             {
@@ -131,7 +131,7 @@ jobs:
               "TIMEZONE": "${{ inputs.timezone }}",
               "PORTAINER_STACK_NAME": "${{ inputs.portainer_stack_name }}",
               "CUSTOMER": "${{ inputs.stack_name }}",
-              "CUSTOMER_LOWERCASE": "${{ inputs.stack_name_lowercase }}",
+              "CUSTOMER_LOWERCASE": "${{ steps.lowercase_stack_name.outputs.output }}",
               "RELEASE_DATE": "${{ steps.date.outputs.date }}",
               "NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}",
               "NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}",
