@@ -88,10 +88,15 @@ on:
         default: ""
         description: "Name of the enviroment"
         required: false
-      enviroment_url:
+      www_redirect:
+        type: string
+        default: "non-www-to-www"
+        description: "Configure the redirect for the www subdomain"
+        required: false
+      public_domains:
         type: string
         default: ""
-        description: "URL of the enviroment"
+        description: "Public domains for the stack"
         required: false
 
 jobs:
@@ -99,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.enviroment_name || inputs.portainer_stack_name }}
-      url: ${{ inputs.enviroment_url || github.event.repository.homepage }}
+      url: "https://${{ inputs.stack_name }}.litefyr.com"
     steps:
       - name: Lowercase stack name
         id: lowercase_stack_name
@@ -107,8 +112,6 @@ jobs:
       - name: Wait 10 seconds
         shell: bash
         run: sleep 10s
-      - name: Create summary
-        run: echo '### Deployment for [${{ inputs.enviroment_name || inputs.stack_name }}](${{ inputs.enviroment_url || github.event.repository.homepage }}) :rocket:' >> $GITHUB_STEP_SUMMARY
       - name: Clone Repository
         uses: actions/checkout@v4
       - name: Get current date
@@ -125,6 +128,8 @@ jobs:
           stack-definition: ".docker/stack.yml"
           template-variables: >-
             {
+              "WWW_REDIRECT": "${{ inputs.www_redirect }}",
+              "PUBLIC_DOMAINS": "${{ inputs.public_domains }}",
               "NEOS_IMAGE_TAG": "${{ inputs.image_tag }}",
               "MAILER_FROM": "${{ inputs.mailer_from }}",
               "MAILER_DSN": "${{ secrets.MAILER_DSN }}",
@@ -170,3 +175,5 @@ jobs:
         uses: joelwmale/webhook-action@2.4.1
         with:
           url: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+      - name: Create summary
+        run: echo '### Deployment for [${{ inputs.enviroment_name || inputs.stack_name }}](https://${{ inputs.stack_name }}.litefyr.com) :rocket:' >> $GITHUB_STEP_SUMMARY
