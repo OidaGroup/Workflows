@@ -98,6 +98,11 @@ on:
         default: ""
         description: "Public domains for the stack"
         required: false
+      s3_region:
+        type: string
+        default: "eu-central-1"
+        description: "Region for the S3 bucket"
+        required: false
 
 jobs:
   portainer:
@@ -146,6 +151,7 @@ jobs:
               "MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}",
               "NEOS_S3_ENDPOINT": "${{ secrets.NEOS_S3_ENDPOINT }}",
               "NEOS_S3_SECRET": "${{ secrets.NEOS_S3_SECRET }}",
+              "NEOS_S3_REGION": "${{ inputs.s3_region }}",
               "SHOPWARE_APP_URL": "${{ secrets.SHOPWARE_APP_URL }}",
               "SHOPWARE_APP_SECRET": "${{ secrets.SHOPWARE_APP_SECRET }}",
               "SHOPWARE_DATABASE_PWD": "${{ secrets.SHOPWARE_DATABASE_PWD }}",
