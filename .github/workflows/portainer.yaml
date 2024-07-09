@@ -103,6 +103,11 @@ on:
         default: "eu-central-1"
         description: "Region for the S3 bucket"
         required: false
+      stack_definition:
+        type: string
+        default: ".docker/stack.yml"
+        description: "Path to the stack definition"
+        required: false
 
 jobs:
   portainer:
@@ -130,7 +135,7 @@ jobs:
           password: ${{ secrets.PORTAINER_PASSWORD }}
           swarm-id: ${{ secrets.PORTAINER_SWARM_ID }}
           stack-name: "${{ inputs.stack_prefix }}${{ steps.lowercase_stack_name.outputs.output }}-${{ inputs.portainer_stack_name }}"
-          stack-definition: ".docker/stack.yml"
+          stack-definition: ${{ inputs.stack_definition }}
           template-variables: >-
             {
               "WWW_REDIRECT": "${{ inputs.www_redirect }}",
