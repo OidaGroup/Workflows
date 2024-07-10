@@ -88,15 +88,15 @@ on:
         default: ""
         description: "Name of the enviroment"
         required: false
-      www_redirect:
-        type: string
-        default: "non-www-to-www"
-        description: "Configure the redirect for the www subdomain"
-        required: false
-      public_domains:
+      www_domains:
         type: string
         default: ""
-        description: "Public domains for the stack"
+        description: "Domains who should redirect from non-www to www. Space as seperator, without https"
+        required: false
+      non_www_domains:
+        type: string
+        default: ""
+        description: "Domains who should redirect from www to non-www. Space as seperator, without https"
         required: false
       s3_region:
         type: string
@@ -138,8 +138,8 @@ jobs:
           stack-definition: ${{ inputs.stack_definition }}
           template-variables: >-
             {
-              "WWW_REDIRECT": "${{ inputs.www_redirect }}",
-              "PUBLIC_DOMAINS": "${{ inputs.public_domains }}",
+              "NON_WWW_DOMAINS": "${{ inputs.non_www_domains }}",
+              "WWW_DOMAINS": "${{ inputs.www_domains }}",
               "NEOS_IMAGE_TAG": "${{ inputs.image_tag }}",
               "MAILER_FROM": "${{ inputs.mailer_from }}",
               "MAILER_DSN": "${{ secrets.MAILER_DSN }}",
