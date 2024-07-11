@@ -108,6 +108,11 @@ on:
         default: ".docker/stack.yml"
         description: "Path to the stack definition"
         required: false
+      zone:
+        type: string
+        default: "fs"
+        description: "Zone where the stack should be deployed"
+        required: false
 
 jobs:
   portainer:
@@ -138,33 +143,34 @@ jobs:
           stack-definition: ${{ inputs.stack_definition }}
           template-variables: >-
             {
-              "NON_WWW_DOMAINS": "${{ inputs.non_www_domains }}",
-              "WWW_DOMAINS": "${{ inputs.www_domains }}",
-              "NEOS_IMAGE_TAG": "${{ inputs.image_tag }}",
-              "MAILER_FROM": "${{ inputs.mailer_from }}",
-              "MAILER_DSN": "${{ secrets.MAILER_DSN }}",
-              "TIMEZONE": "${{ inputs.timezone }}",
-              "PORTAINER_STACK_NAME": "${{ inputs.portainer_stack_name }}",
               "CUSTOMER": "${{ inputs.stack_name }}",
               "CUSTOMER_LOWERCASE": "${{ steps.lowercase_stack_name.outputs.output }}",
-              "RELEASE_DATE": "${{ steps.date.outputs.date }}",
-              "NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}",
-              "NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}",
-              "MAUTIC_USER": "${{ secrets.MAUTIC_USER }}",
-              "MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}",
+              "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}",
+              "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}",
+              "MAILER_DSN": "${{ secrets.MAILER_DSN }}",
+              "MAILER_FROM": "${{ inputs.mailer_from }}",
               "MAUTIC_DB_HOST": "${{ secrets.MAUTIC_DB_HOST }}",
               "MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}",
+              "MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}",
+              "MAUTIC_USER": "${{ secrets.MAUTIC_USER }}",
+              "NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}",
+              "NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}",
+              "NEOS_IMAGE_TAG": "${{ inputs.image_tag }}",
               "NEOS_S3_ENDPOINT": "${{ secrets.NEOS_S3_ENDPOINT }}",
-              "NEOS_S3_SECRET": "${{ secrets.NEOS_S3_SECRET }}",
               "NEOS_S3_REGION": "${{ inputs.s3_region }}",
-              "SHOPWARE_APP_URL": "${{ secrets.SHOPWARE_APP_URL }}",
+              "NEOS_S3_SECRET": "${{ secrets.NEOS_S3_SECRET }}",
+              "NON_WWW_DOMAINS": "${{ inputs.non_www_domains }}",
+              "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}",
+              "PORTAINER_STACK_NAME": "${{ inputs.portainer_stack_name }}",
+              "RELEASE_DATE": "${{ steps.date.outputs.date }}",
               "SHOPWARE_APP_SECRET": "${{ secrets.SHOPWARE_APP_SECRET }}",
+              "SHOPWARE_APP_URL": "${{ secrets.SHOPWARE_APP_URL }}",
               "SHOPWARE_DATABASE_PWD": "${{ secrets.SHOPWARE_DATABASE_PWD }}",
               "SHOPWARE_MAIL_PWD": "${{ secrets.SHOPWARE_MAIL_PWD }}",
-              "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}",
-              "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}",
-              "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}",
-              "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}"
+              "TIMEZONE": "${{ inputs.timezone }}",
+              "WWW_DOMAINS": "${{ inputs.www_domains }}",
+              "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}",
+              "ZONE": "${{ inputs.zone }}"
             }
       - name: Check if webhook is present
         id: check_webhook
