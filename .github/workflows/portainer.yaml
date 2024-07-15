@@ -113,6 +113,11 @@ on:
         default: "fs"
         description: "Zone where the stack should be deployed"
         required: false
+      server_name:
+        type: string
+        default: ""
+        description: "Name of the server"
+        required: false
 
 jobs:
   portainer:
@@ -143,6 +148,7 @@ jobs:
           stack-definition: ${{ inputs.stack_definition }}
           template-variables: >-
             {
+              "SERVER_NAME": "${{ inputs.server_name }}",
               "CUSTOMER": "${{ inputs.stack_name }}",
               "CUSTOMER_LOWERCASE": "${{ steps.lowercase_stack_name.outputs.output }}",
               "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}",
