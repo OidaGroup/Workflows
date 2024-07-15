@@ -148,6 +148,8 @@ jobs:
           stack-definition: ${{ inputs.stack_definition }}
           template-variables: >-
             {
+              "CURLY_OPEN": "{{",
+              "CURLY_CLOSE": "}}",
               "SERVER_NAME": "${{ inputs.server_name }}",
               "CUSTOMER": "${{ inputs.stack_name }}",
               "CUSTOMER_LOWERCASE": "${{ steps.lowercase_stack_name.outputs.output }}",
