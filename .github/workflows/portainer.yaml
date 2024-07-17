@@ -184,7 +184,7 @@ jobs:
               "WWW_DOMAINS": "${{ inputs.www_domains }}",
               "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}",
               "ZONE": "${{ inputs.zone }}",
-              "NEOS_SETTINGS": "${{ inputs.neos_settings }}"
+              "NEOS_SETTINGS": ${{ toJson(inputs.neos_settings) }}
             }
       - name: Check if webhook is present
         id: check_webhook
