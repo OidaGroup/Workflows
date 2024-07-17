@@ -3,9 +3,6 @@ name: Deploy to Portainer
 on:
   workflow_call:
     secrets:
-      PORTAINER_WEBHOOK_URL:
-        description: "Webhook URL of the Portainer instance"
-        required: false
       PORTAINER_HOST:
         description: "Host of the Portainer instance"
         required: true
@@ -143,7 +140,7 @@ jobs:
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Deploy stack to Portainer
-        uses: carlrygart/portainer-stack-deploy@v1
+        uses: scod-br/portainer-stack-deploy@1.5
         with:
           portainer-host: ${{ secrets.PORTAINER_HOST }}
           username: ${{ secrets.PORTAINER_USERNAME }}
@@ -151,6 +148,7 @@ jobs:
           swarm-id: ${{ secrets.PORTAINER_SWARM_ID }}
           stack-name: "${{ inputs.stack_prefix }}${{ steps.lowercase_stack_name.outputs.output }}-${{ inputs.portainer_stack_name }}"
           stack-definition: ${{ inputs.stack_definition }}
+          pull-image: true
           template-variables: >-
             {
               "CURLY_OPEN": "{{",
@@ -184,27 +182,6 @@ jobs:
               "WWW_DOMAINS": "${{ inputs.www_domains }}",
               "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}",
               "ZONE": "${{ inputs.zone }}",
-              "NEOS_SETTINGS": ${{ toJson(inputs.neos_settings) }}
             }
-      - name: Check if webhook is present
-        id: check_webhook
-        shell: bash
-        run: |
-          if [ "$SECRET" == "" ]; then
-            echo "output=NO" >> $GITHUB_OUTPUT
-          else
-            echo "output=YES" >> $GITHUB_OUTPUT
-          fi
-        env:
-          SECRET: ${{ secrets.PORTAINER_WEBHOOK_URL }}
-      - name: Wait 10 seconds
-        if: (steps.check_webhook.outputs.output == 'YES')
-        shell: bash
-        run: sleep 10s
-      - name: Send webhook to Portainer
-        if: (steps.check_webhook.outputs.output == 'YES')
-        uses: joelwmale/webhook-action@2.4.1
-        with:
-          url: ${{ secrets.PORTAINER_WEBHOOK_URL }}
       - name: Create summary
         run: echo '### Deployment for [${{ inputs.enviroment_name || inputs.stack_name }}](https://${{ inputs.stack_name }}.litefyr.com) :rocket:' >> $GITHUB_STEP_SUMMARY
