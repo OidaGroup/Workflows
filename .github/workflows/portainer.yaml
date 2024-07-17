@@ -192,7 +192,7 @@ jobs:
               "TIMEZONE": "${{ inputs.timezone }}",
               "WWW_DOMAINS": "${{ inputs.www_domains }}",
               "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}",
-              "ZONE": "${{ inputs.zone }}",
+              "ZONE": "${{ inputs.zone }}"
             }
       - name: Create summary
         run: echo '### Deployment for [${{ inputs.enviroment_name || inputs.stack_name }}](https://${{ inputs.stack_name }}.litefyr.com) :rocket:' >> $GITHUB_STEP_SUMMARY
