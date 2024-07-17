@@ -120,6 +120,16 @@ on:
         default: ""
         description: "Additional settings for Neos"
         required: false
+      prune_stack:
+        type: boolean
+        default: false
+        description: "If set to true, the action will remove any services that are not defined in the stack definition."
+        required: false
+      pull_image:
+        type: boolean
+        default: true
+        description: "If set to true, the action will pull the image before deploying the stack."
+        required: false
 
 jobs:
   portainer:
@@ -148,7 +158,8 @@ jobs:
           swarm-id: ${{ secrets.PORTAINER_SWARM_ID }}
           stack-name: "${{ inputs.stack_prefix }}${{ steps.lowercase_stack_name.outputs.output }}-${{ inputs.portainer_stack_name }}"
           stack-definition: ${{ inputs.stack_definition }}
-          pull-image: true
+          prune-stack: ${{ inputs.prune_stack }}
+          pull-image: ${{ inputs.pull_image }}
           template-variables: >-
             {
               "CURLY_OPEN": "{{",
