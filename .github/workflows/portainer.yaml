@@ -118,6 +118,11 @@ on:
         default: ""
         description: "Name of the server"
         required: false
+      neos_settings:
+        type: string
+        default: ""
+        description: "Additional settings for Neos"
+        required: false
 
 jobs:
   portainer:
@@ -178,7 +183,8 @@ jobs:
               "TIMEZONE": "${{ inputs.timezone }}",
               "WWW_DOMAINS": "${{ inputs.www_domains }}",
               "ZAMMAD_TOKEN": "${{ secrets.ZAMMAD_TOKEN }}",
-              "ZONE": "${{ inputs.zone }}"
+              "ZONE": "${{ inputs.zone }}",
+              "NEOS_SETTINGS": "${{ inputs.neos_settings }}"
             }
       - name: Check if webhook is present
         id: check_webhook
