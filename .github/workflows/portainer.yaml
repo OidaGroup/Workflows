@@ -122,7 +122,7 @@ on:
         required: false
       prune_stack:
         type: boolean
-        default: false
+        default: true
         description: "If set to true, the action will remove any services that are not defined in the stack definition."
         required: false
       pull_image:
