@@ -130,6 +130,11 @@ on:
         default: true
         description: "If set to true, the action will pull the image before deploying the stack."
         required: false
+      default_locale:
+        type: string
+        default: "de"
+        description: "The default language"
+        required: false
 
 jobs:
   portainer:
@@ -167,6 +172,7 @@ jobs:
               "SERVER_NAME": "${{ inputs.server_name }}",
               "CUSTOMER": "${{ inputs.stack_name }}",
               "CUSTOMER_LOWERCASE": "${{ steps.lowercase_stack_name.outputs.output }}",
+              "DEFAULT_LOCALE": "${{ inputs.default_locale }}",
               "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}",
               "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}",
               "MAILER_DSN": "${{ secrets.MAILER_DSN }}",
