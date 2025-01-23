@@ -138,7 +138,7 @@ on:
       mautic_domain:
         type: string
         default: ""
-        description: "The domain of mautic. https:// need to be included"
+        description: "The domain of mautic. Without https://"
         required: false
 
 jobs:
