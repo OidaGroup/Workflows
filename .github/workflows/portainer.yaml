@@ -135,6 +135,11 @@ on:
         default: "de"
         description: "The default language"
         required: false
+      mautic_domain:
+        type: string
+        default: ""
+        description: "The domain of mautic. https:// need to be included"
+        required: false
 
 jobs:
   portainer:
@@ -181,6 +186,7 @@ jobs:
               "MAUTIC_DB_PASSWORD": "${{ secrets.MAUTIC_DB_PASSWORD }}",
               "MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}",
               "MAUTIC_USER": "${{ secrets.MAUTIC_USER }}",
+              "MAUTIC_DOMAIN": "${{ inputs.mautic_domain }}",
               "NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}",
               "NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}",
               "NEOS_IMAGE_TAG": "${{ inputs.image_tag }}",
