@@ -51,6 +51,9 @@ on:
       ZAMMAD_TOKEN:
         description: "Token for Zammad instance"
         required: false
+      MEILISEARCH_API_KEY:
+        description: "API key for Meilisearch"
+        required: false
     inputs:
       stack_name:
         type: string
@@ -180,6 +183,7 @@ jobs:
               "DEFAULT_LOCALE": "${{ inputs.default_locale }}",
               "ELASTICSEARCH_PASSWORD": "${{ secrets.ELASTICSEARCH_PASSWORD }}",
               "ELASTICSEARCH_USERNAME": "${{ secrets.ELASTICSEARCH_USERNAME }}",
+              "MEILISEARCH_API_KEY": "${{ secrets.MEILISEARCH_API_KEY }}",
               "MAILER_DSN": "${{ secrets.MAILER_DSN }}",
               "MAILER_FROM": "${{ inputs.mailer_from }}",
               "MAUTIC_DB_HOST": "${{ secrets.MAUTIC_DB_HOST }}",
