@@ -141,7 +141,12 @@ on:
       mautic_domain:
         type: string
         default: ""
-        description: "The domain of mautic. Without https://"
+        description: "Deprecated. The domain of mautic. Without https://"
+        required: false
+      mautic_url:
+        type: string
+        default: ""
+        description: "The url of mautic. Including https://"
         required: false
 
 jobs:
@@ -191,6 +196,7 @@ jobs:
               "MAUTIC_PASSWORD": "${{ secrets.MAUTIC_PASSWORD }}",
               "MAUTIC_USER": "${{ secrets.MAUTIC_USER }}",
               "MAUTIC_DOMAIN": "${{ inputs.mautic_domain }}",
+              "MAUTIC_URL": "${{ inputs.mautic_url }}",
               "NEOS_DB_HOST": "${{ secrets.NEOS_DB_HOST }}",
               "NEOS_DB_PASSWORD": "${{ secrets.NEOS_DB_PASSWORD }}",
               "NEOS_IMAGE_TAG": "${{ inputs.image_tag }}",
