@@ -204,7 +204,7 @@ jobs:
               "P2P_DB_NAME": "${{ secrets.P2P_DB_NAME }}",
               "P2P_LICENCE_DB_HOST: "${{ secrets.P2P_LICENCE_DB_HOST }}",
               "P2P_LICENCE_DB_USER: "${{ secrets.P2P_LICENCE_DB_USERNAME }}",
-              "P2P_LICENCE_DB_PASS: "${{ P2P_LICENCE_DB_PASSWORD }}",
+              "P2P_LICENCE_DB_PASS: "${{ secrets.P2P_LICENCE_DB_PASSWORD }}",
               "P2P_LICENCE_DB_NAME: "${{ secrets.P2P_LICENCE_DB_NAME }}",
               "P2P_LICENCE_API_KEY: "${{ secrets.P2P_LICENCE_API_KEY }}",
               "PEXELS_API_KEY": "${{ secrets.PEXELS_API_KEY }}",
